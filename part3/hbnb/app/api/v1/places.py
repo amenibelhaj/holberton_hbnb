@@ -3,6 +3,9 @@ from app.services import facade
 from app.services.facade import HBnBFacade
 from app import db
 from app.models.amenity import Amenity 
+from app.models.place import Place
+from app.models.amenity import Amenity
+
 
 from flask_jwt_extended import get_jwt, jwt_required, get_jwt_identity
 
@@ -40,10 +43,40 @@ class PlaceList(Resource):
         place_data = api.payload
         current_user_id = get_jwt_identity()
         place_data['user_id'] = current_user_id
+
+        # Get the amenities_ids from the request payload (if any)
+        amenities_ids = place_data.get('amenities_ids', [])
+
         try:
+            # Create the new place using the facade
             new_place = facade.create_place(place_data)
+
+            # If amenities_ids are provided, add them to the new place
+            if amenities_ids:
+                for amenity_id in amenities_ids:
+                    # Query the amenity by ID
+                    amenity = Amenity.query.get(amenity_id)  # Fetch the amenity by ID
+
+                    if amenity:
+                        # Add the amenity to the place
+                        new_place.add_amenity(amenity)
+                    else:
+                        # If any amenity ID is invalid, return an error
+                        return {'error': f'Amenity with ID {amenity_id} not found'}, 404
+            
+            # After adding amenities, return the newly created place's details
             associated_amenities = [amenity.name for amenity in new_place.associated_amenities]
-            return {'id': new_place.id, 'title': new_place.title, 'description': new_place.description, 'price': new_place.price, 'latitude': new_place.latitude, 'longitude' : new_place.longitude, 'associated_amenities': associated_amenities}, 201
+
+            return {
+                'id': new_place.id,
+                'title': new_place.title,
+                'description': new_place.description,
+                'price': new_place.price,
+                'latitude': new_place.latitude,
+                'longitude': new_place.longitude,
+                'associated_amenities': associated_amenities
+            }, 201
+
         except ValueError:
             return {'error': 'Invalid input data'}, 400
 
@@ -54,7 +87,7 @@ class PlaceList(Resource):
         places_data = facade.get_all_places()
         if not places_data:
             return {'error': 'No places found'}, 404
-    
+
         return [{
             'id': place_data['place']['id'],
             'title': place_data['place']['title'],
@@ -160,18 +193,44 @@ class PlaceAmenitiesResource(Resource):
         if len(amenities) != len(amenities_ids):
             return {'error': 'Some amenities not found'}, 404
         
-        # If place_data is a dictionary, access associated_amenities like this:
+        # Check if 'associated_amenities' exists in place_data
         if 'associated_amenities' in place_data:
-            # If 'associated_amenities' exists, add the amenities to it
-            place_data['associated_amenities'].extend(amenities)
+            # If it exists, extend the list of associated amenities
+            existing_amenities_ids = [amenity.id for amenity in place_data['associated_amenities']]
+            for amenity in amenities:
+                if amenity.id not in existing_amenities_ids:
+                    place_data['associated_amenities'].append(amenity)
         else:
-            # If it doesn't exist, create it and set it to the list of amenities
+            # If it doesn't exist, create the list of associated amenities
             place_data['associated_amenities'] = amenities
         
-        # Here, you should commit to the database to save the changes (assuming your facade does this)
-        db.session.commit()  # Save the changes in the database
-        
+        # Update the place data in the database (make sure this function properly updates the database)
+        facade.update_place(place_data)
+
         return {'message': 'Amenities added successfully'}, 200
+
+    @api.response(200, 'Amenities retrieved successfully')
+    @api.response(404, 'Place not found')
+    @jwt_required()
+    def get(self, place_id):
+        """Retrieve amenities associated with a place by its ID"""
+        # Fetch place from the database
+        place_data = facade.get_place(place_id)
+        
+        if not place_data:
+            return {'error': 'Place not found'}, 404
+        associated_amenities = place_data['associated_amenities']
+        # Retrieve the associated amenities for the place
+        amenities = Amenity.query.filter(Amenity.id.in_(associated_amenities)).all()
+        
+        # If there are associated amenities, return them
+        if associated_amenities:
+     # Return a list of amenities (you can modify this as needed)
+            amenities_list = [{'id': amenity.id, 'name': amenity.name} for amenity in amenities]
+            return {'associated_amenities': amenities_list}, 200
+        else:
+            return {'message': 'No amenities associated with this place'}, 404
+
 
 
 @api.route('/admin/<place_id>')

@@ -24,13 +24,14 @@ class Place(BaseModel):
     # Many-to-many relationship with Amenity
     associated_amenities = db.relationship('Amenity', secondary=place_amenity_association, backref='places_associated')
 
-    def __init__(self, title, description, price, latitude, longitude):
+    def __init__(self, title, description, price, latitude, longitude, user_id):
         super().__init__()
         self.title = title
         self.description = description
         self.price = price
         self.latitude = latitude
         self.longitude = longitude
+        self.user_id = user_id 
         self.validate_place()
 
     def validate_place(self):
@@ -52,8 +53,9 @@ class Place(BaseModel):
     # Add an amenity to the place (this will associate the amenity with the place)
     def add_amenity(self, amenity):
         """Add an amenity to the place."""
-        self.associated_amenities.append(amenity)
-        db.session.commit()  # Ensure the changes are committed to the database
+        if amenity not in self.associated_amenities:
+         self.associated_amenities.append(amenity)
+
 
     # Returns the place information as a dictionary
     def list_by_place(self):

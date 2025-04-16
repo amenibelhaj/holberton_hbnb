@@ -67,6 +67,7 @@ class SQLAlchemyRepository(Repository):
     def add(self, obj):
         """Add a new object to the session."""
         db.session.add(obj)
+        self.commit()
 
     def get(self, obj_id):
         """Get a single object by its ID."""
@@ -82,13 +83,13 @@ class SQLAlchemyRepository(Repository):
         if obj:
             for key, value in data.items():
                 setattr(obj, key, value)
-
+                self.commit()
     def delete(self, obj_id):
         """Delete an object by its ID."""
         obj = self.get(obj_id)
         if obj:
             db.session.delete(obj)
-
+            self.commit()
     def get_by_attribute(self, attr_name, attr_value):
         """Get an object by a specific attribute."""
         return self.model.query.filter_by(**{attr_name: attr_value}).first()
@@ -104,3 +105,4 @@ class SQLAlchemyRepository(Repository):
     def rollback(self):
         """Rollback the transaction."""
         db.session.rollback()
+        

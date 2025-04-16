@@ -23,7 +23,7 @@ def create_app(config_name='default'):
     bcrypt.init_app(app)
     jwt.init_app(app)
 
-    # Make sure to call db.init_app(app) to link the app with the db instance
+    
     db.init_app(app)  # Connect db to the app
     migrate.init_app(app, db)  # Setup migration tool
 

@@ -1,6 +1,9 @@
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
 from flask_jwt_extended import get_jwt, jwt_required, get_jwt_identity
+from app.services.facade import HBnBFacade
+
+facade = HBnBFacade()
 
 api = Namespace('reviews', description='Review operations')
 # Define the review model for input validation and documentation

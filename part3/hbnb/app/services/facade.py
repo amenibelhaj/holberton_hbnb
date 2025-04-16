@@ -7,7 +7,7 @@ from app.services.repositories.user_repository import UserRepository
 from app.services.repositories.place_repository import PlaceRepository
 from app.services.repositories.review_repository import ReviewRepository
 from app.services.repositories.amenity_repository import AmenityRepository
-
+import uuid
 class HBnBFacade:
     """Class for facade methods"""
     def __init__(self):
@@ -54,7 +54,9 @@ class HBnBFacade:
     """methods for amenity"""
     def create_amenity(self, amenity_data):
         # Create a new amenity and stores it in the repository
+        amenity_id = str(uuid.uuid4())
         amenity = Amenity(
+            id=amenity_id,
             name=amenity_data['name'],
             description=amenity_data.get('description', None)
         )
@@ -122,9 +124,11 @@ class HBnBFacade:
             price=place_data['price'],
             latitude=place_data['latitude'],
             longitude=place_data['longitude'],
-        )
+            user_id=place_data['user_id']
+
+        ) 
         # Adds user_id to place after its creation
-        place.user_id = place_data['user_id']
+       
         # Adds amenities to the place
         amenity_ids = place_data.get('associated_amenities', [])
         if amenity_ids:
@@ -151,7 +155,8 @@ class HBnBFacade:
                     'price': place.price,
                     'latitude': place.latitude,
                     'longitude': place.longitude,
-                    'user_id': place.user_id
+                    'user_id': place.user_id 
+
                 },
                 'associated_amenities': [amenity.id for amenity in place.associated_amenities]
             }
