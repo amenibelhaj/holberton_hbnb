@@ -1,0 +1,168 @@
+/* Universal styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1rem;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+main {
+    padding: 2rem;
+}
+
+/* Header and Navigation */
+header .logo {
+    max-height: 50px;
+    margin-right: 20px;
+}
+
+#login-link {
+    margin-left: auto;
+    font-size: 1.2rem;
+}
+
+/* Place Cards */
+.place-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 20px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    width: 300px;
+}
+
+.place-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.place-card p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.details-button {
+    padding: 10px 15px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+}
+
+.details-button:hover {
+    background-color: #555;
+}
+
+/* Place Details */
+.place-details, .place-info {
+    margin-bottom: 20px;
+}
+
+#reviews {
+    margin-top: 2rem;
+}
+
+.review-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.review-card .comment {
+    font-size: 1rem;
+}
+
+.review-card .rating {
+    font-size: 1.1rem;
+    color: #ff9900;
+}
+
+.add-review {
+    margin-top: 2rem;
+}
+
+#add-review form {
+    display: flex;
+    flex-direction: column;
+}
+
+#add-review label {
+    margin: 10px 0 5px;
+}
+
+#add-review textarea {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+#rating {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #555;
+}
+
+/* Filter */
+#filter {
+    margin-bottom: 20px;
+}
+
+#price-filter {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Footer */
+footer p {
+    font-size: 0.9rem;
+}

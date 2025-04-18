@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Details</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="login.html" id="login-link">Login</a>
+            <a href="index.html" id="home-link">Home</a>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <section id="place-details">
+            <!-- Place details will be populated dynamically -->
+        </section>
+
+        <section id="reviews">
+            <!-- Reviews will be populated dynamically -->
+        </section>
+
+        <!-- Add review section (visible only for authenticated users) -->
+        <section id="add-review" style="display: none;">
+            <h2>Add a Review</h2>
+            <form id="review-form">
+                <label for="review-text">Review:</label>
+                <textarea id="review-text" name="review-text" required></textarea>
+                
+                <label for="rating">Rating:</label>
+                <select id="rating" name="rating" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>All rights reserved © 2025</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="scripts.js"></script>
+</body>
+</html>
