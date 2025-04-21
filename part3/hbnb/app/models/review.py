@@ -16,11 +16,12 @@ class Review(BaseModel):
     place_id = db.Column(db.String(36), db.ForeignKey('places.id'), nullable=False)
     user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
     
-    def __init__(self, rating, text):
-        super().__init__()
-        self.rating = rating
-        self.text = text
-        self.validate_review()
+def __init__(self, text, rating, user_id, place_id):
+    self.text = text
+    self.rating = rating
+    self.user_id = user_id
+    self.place_id = place_id
+    self.validate_review()
 
     def validate_review(self):
         """Validates review informations format"""

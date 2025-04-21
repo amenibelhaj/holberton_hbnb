@@ -6,9 +6,9 @@ class ReviewRepository(SQLAlchemyRepository):
     def __init__(self):
         super().__init__(Review)
 
-    def get_reviews_by_place(self, place_id):
-        # Returns all reviews for a specific place
-        return self.model.query.filter_by(place_id=place_id).all()
+    def get_by_place(self, place_id):
+        # Query the reviews table to get all reviews for a given place
+        return db.session.query(Review).filter(Review.place_id == place_id).all()
 
     def get_review_by_user_and_place(self, user_id, place_id):
         # Check if a review already exists for the user on the specified place
