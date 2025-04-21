@@ -6,7 +6,10 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///development.db'
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        'DATABASE_URL',
+        'postgresql://mac@localhost/hbnbameni_db'
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 config = {

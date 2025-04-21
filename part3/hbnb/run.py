@@ -1,6 +1,7 @@
-from app import create_app
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+app = Flask(__name__)
+CORS(app)  # ✅ Apply CORS to all routes
 
-app = create_app()
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

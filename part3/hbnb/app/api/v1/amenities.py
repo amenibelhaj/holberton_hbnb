@@ -4,6 +4,7 @@ from app.services.facade import HBnBFacade
 from app.services import facade
 from flask import request
 import uuid
+from sqlalchemy.dialects.postgresql import UUID
 facade = HBnBFacade()
 
 api = Namespace('amenities', description='Amenity operations')

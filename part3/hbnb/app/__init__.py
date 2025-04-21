@@ -16,6 +16,10 @@ migrate = Migrate()
 def create_app(config_name='default'):
     app = Flask(__name__)
 
+    # Enable CORS for /api/v1/*
+    from flask_cors import CORS
+    CORS(app, resources={r"/api/v1/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"]}})
+  
     # Load the configuration based on the environment (default to 'default')
     app.config.from_object(config[config_name])  # Load the config based on 'default'
 

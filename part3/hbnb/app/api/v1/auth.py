@@ -5,7 +5,6 @@ from flask_jwt_extended import (
     jwt_required, create_access_token,
     get_jwt_identity, get_jwt
 )
-
 from app.services.facade import HBnBFacade
 from app.models.user import User
 
