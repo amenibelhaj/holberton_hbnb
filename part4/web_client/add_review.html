@@ -1,57 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Add Review</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Review - HBnB</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Header with logo and navigation -->
   <header>
-    <img src="images/logo.png" alt="HBNB Logo" class="logo" />
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="login.html" class="login-button">Login</a>
-    </nav>
+    <div class="container">
+      <nav>
+        <div class="logo">hbnb</div>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <!-- Main content -->
-  <main>
-    <section class="place-identifier">
-      <h1>Review This Place</h1>
-      <p id="place-name">Place name will be dynamically loaded</p>
-    </section>
-
-    <!-- Review Form -->
-    <section>
-      <form id="review-form" class="add-review form">
+  <div class="container">
+    <section class="add-review-section">
+      <h1 class="add-review-title">Reviewing: Beautiful Beach House</h1>
+      
+      <div class="review-form">
         <h2>Add a Review</h2>
-
-        <label for="review">Your Review:</label>
-        <textarea id="review" name="review" required></textarea>
-
-        <label for="rating">Rating:</label>
-        <select id="rating" name="rating" required>
-          <option value="" disabled selected>Select a rating</option>
-          <option value="1">★☆☆☆☆ (1)</option>
-          <option value="2">★★☆☆☆ (2)</option>
-          <option value="3">★★★☆☆ (3)</option>
-          <option value="4">★★★★☆ (4)</option>
-          <option value="5">★★★★★ (5)</option>
-        </select>
-
-        <button type="submit">Submit Review</button>
-      </form>
+        
+        <form id="reviewForm">
+          <div class="form-group">
+            <label for="reviewText">Your Review:</label>
+            <textarea id="reviewText" class="form-control" required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Rating:</label>
+            <div class="rating-stars">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+      </div>
     </section>
-  </main>
+  </div>
 
-  <!-- Footer -->
   <footer>
-    <p>All rights reserved © 2025</p>
+    <div class="container">
+      <p>© 2024 HBnB Evolution. All rights reserved.</p>
+    </div>
   </footer>
 
-  <!-- JS Script -->
-  <script src="scripts.js"></script>
+  <script>
+    // Star rating functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const stars = document.querySelectorAll('.star');
+      
+      stars.forEach(star => {
+        star.addEventListener('click', function() {
+          const value = parseInt(this.getAttribute('data-value'));
+          
+          // Reset all stars
+          stars.forEach(s => s.classList.remove('active'));
+          
+          // Activate selected and previous stars
+          for (let i = 0; i < value; i++) {
+            stars[i].classList.add('active');
+          }
+          
+          // You might want to add a hidden input to store the value
+          // document.getElementById('ratingValue').value = value;
+        });
+      });
+    });
+  </script>
 </body>
 </html>

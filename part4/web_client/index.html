@@ -1,47 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Places</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HBnB - Available Places</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <img src="images/logo.png" alt="HBNB Logo" class="logo">
-        <nav>
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="login.html" class="login-button">Login</a>
-        </nav>
-    </header>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">hbnb</div>
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="login.html" id="login-link">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Main content -->
+  <div class="container">
     <main>
-        <!-- Filter section -->
-        <section id="filter">
-            <label for="price-filter">Max Price:</label>
-            <select id="price-filter">
-                <option value="100">Under $100</option>
-                <option value="200">Under $200</option>
-                <option value="300">Under $300</option>
-                <option value="500">Under $500</option>
-                <option value="1000">Under $1000</option>
-            </select>
-        </section>
+      <h1 class="page-title">Available Places</h1>
 
-        <!-- List of places -->
-        <section id="places-list">
-            <!-- Dynamically populated place cards will go here -->
-        </section>
+      <div class="filter-section">
+        <div class="filter-group">
+          <label for="price-filter">Max Price:</label>
+          <select id="price-filter" class="filter-select">
+            <option value="all">All</option>
+            <option value="10">$10</option>
+            <option value="50">$50</option>
+            <option value="100">$100</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div id="places-list" class="places-list">
+        <!-- Places will be dynamically populated here -->
+      </div>
     </main>
+  </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>All rights reserved © 2025</p>
-    </footer>
+  <footer>
+    <div class="container">
+      <p>© 2024 HBnB Evolution. All rights reserved.</p>
+    </div>
+  </footer>
 
-    <!-- JavaScript -->
-    <script src="scripts.js"></script>
+  <script src="scripts.js"></script>
 </body>
 </html>

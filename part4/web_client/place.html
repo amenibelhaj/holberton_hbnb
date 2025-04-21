@@ -1,57 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Place Details</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beautiful Beach House - HBnB</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <nav>
-            <a href="login.html" id="login-link">Login</a>
-            <a href="index.html" id="home-link">Home</a>
-        </nav>
-    </header>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">hbnb</div>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Main content -->
+  <div class="container">
     <main>
-        <section id="place-details">
-            <!-- Place details will be populated dynamically -->
-        </section>
+      <section class="place-details">
+        <h1 class="place-title">Beautiful Beach House</h1>
+        
+        <div class="place-info">
+          <p><strong>Host:</strong> John Doe</p>
+          <p><strong>Price per night:</strong> $150</p>
+          <p><strong>Description:</strong> A beautiful beach house with amazing views...</p>
+          
+          <div class="amenities">
+            <span class="amenity-tag">WiFi</span>
+            <span class="amenity-tag">Pool</span>
+            <span class="amenity-tag">Air Conditioning</span>
+          </div>
+        </div>
+        
+        <a href="add_reviews.html" class="btn btn-primary">Add Review</a>
+      </section>
 
-        <section id="reviews">
-            <!-- Reviews will be populated dynamically -->
-        </section>
-
-        <!-- Add review section (visible only for authenticated users) -->
-        <section id="add-review" style="display: none;">
-            <h2>Add a Review</h2>
-            <form id="review-form">
-                <label for="review-text">Review:</label>
-                <textarea id="review-text" name="review-text" required></textarea>
-                
-                <label for="rating">Rating:</label>
-                <select id="rating" name="rating" required>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-                
-                <button type="submit">Submit</button>
-            </form>
-        </section>
+      <section class="reviews-section">
+        <h2 class="reviews-title">Reviews</h2>
+        
+        <div class="review">
+          <div class="review-header">
+            <span class="review-author">Jane Smith</span>
+            <span class="review-rating">★★★★☆</span>
+          </div>
+          <p class="review-content">Great place to stay!</p>
+        </div>
+        
+        <div class="review">
+          <div class="review-header">
+            <span class="review-author">Robert Brown</span>
+            <span class="review-rating">★★★★☆</span>
+          </div>
+          <p class="review-content">Amazing location and very comfortable.</p>
+        </div>
+      </section>
     </main>
+  </div>
 
-    <!-- Footer -->
-    <footer>
-        <p>All rights reserved © 2025</p>
-    </footer>
-
-    <!-- JavaScript -->
-    <script src="scripts.js"></script>
+  <footer>
+    <div class="container">
+      <p>© 2024 HBnB Evolution. All rights reserved.</p>
+    </div>
+  </footer>
 </body>
 </html>
