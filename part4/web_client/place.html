@@ -1,70 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Beautiful Beach House - HBnB</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Details - HBnB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="images/icon.png">
 </head>
 <body>
-  <header>
-    <div class="container">
-      <nav>
-        <div class="logo">hbnb</div>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="login.html">Login</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.png" alt="HBnB Logo" class="logo">
+                <span class="logo-text"></span>
+            </a>
+            <a href="login.html" id="login-link" class="login-button">Login</a>
+            <a href="javascript:void(0);" id="logout-link" class="login-button" style="display: none;">Logout</a>
+        </div>
+    </header>
 
-  <div class="container">
     <main>
-      <section class="place-details">
-        <h1 class="place-title">Beautiful Beach House</h1>
-        
-        <div class="place-info">
-          <p><strong>Host:</strong> John Doe</p>
-          <p><strong>Price per night:</strong> $150</p>
-          <p><strong>Description:</strong> A beautiful beach house with amazing views...</p>
-          
-          <div class="amenities">
-            <span class="amenity-tag">WiFi</span>
-            <span class="amenity-tag">Pool</span>
-            <span class="amenity-tag">Air Conditioning</span>
-          </div>
-        </div>
-        
-        <a href="add_reviews.html" class="btn btn-primary">Add Review</a>
-      </section>
+        <div class="container">
+            <h1 class="page-title" id="place-name">Place Name</h1>
+            
+            <div class="place-details" id="place-details">
+                <!-- Place details will be populated dynamically here -->
+            </div>
 
-      <section class="reviews-section">
-        <h2 class="reviews-title">Reviews</h2>
-        
-        <div class="review">
-          <div class="review-header">
-            <span class="review-author">Jane Smith</span>
-            <span class="review-rating">★★★★☆</span>
-          </div>
-          <p class="review-content">Great place to stay!</p>
+            <h2 class="section-title">Reviews</h2>
+            <div class="reviews-container" id="reviews-container">
+                <!-- Reviews will be populated dynamically here -->
+            </div>
+
+            <div class="add-review-section" id="add-review-section" style="display: none;">
+                <h3>Add a Review</h3>
+                <form id="add-review-form">
+                    <textarea id="review-text" placeholder="Write your review here..." required></textarea>
+                    <button type="submit">Submit Review</button>
+                </form>
+            </div>
+
+            <!-- Button to go to add_review.html -->
+            <div class="review-button">
+                <a href="add_review.html" class="add-review-button">Add Your Review</a>
+            </div>
         </div>
-        
-        <div class="review">
-          <div class="review-header">
-            <span class="review-author">Robert Brown</span>
-            <span class="review-rating">★★★★☆</span>
-          </div>
-          <p class="review-content">Amazing location and very comfortable.</p>
-        </div>
-      </section>
     </main>
-  </div>
 
-  <footer>
-    <div class="container">
-      <p>© 2024 HBnB Evolution. All rights reserved.</p>
-    </div>
-  </footer>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 HBnB. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="scripts.js"></script>
 </body>
 </html>
