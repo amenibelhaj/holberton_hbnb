@@ -36,9 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
             setupPriceFilter();
         }
         
-        // Only fetch place details if on the place details page
+        // Only fetch place details and reviews if on the place details page
         if (placeDetailsSection) {
             fetchPlaceDetails();
+            fetchReviews();
         }
     }
 
@@ -81,6 +82,69 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Fetch user details by user_id
+    async function fetchUserName(userId) {
+        try {
+            const token = getCookie('token');
+            const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+            const response = await fetch(`http://127.0.0.1:5000/api/v1/users/${userId}`, { headers });
+
+            if (response.ok) {
+                const userData = await response.json();
+                return `${userData.first_name} ${userData.last_name}`; // Combine first and last name
+            } else {
+                console.error('Failed to fetch user details', await response.json());
+                return 'Anonymous'; // Fallback if user fetch fails
+            }
+        } catch (error) {
+            console.error('Error fetching user details:', error);
+            return 'Anonymous'; // Fallback in case of error
+        }
+    }
+
+    // Fetch reviews for the place and include user names
+    async function fetchReviews() {
+        const placeId = getPlaceIdFromURL();
+        if (!placeId) {
+            console.error('Place ID not found in URL for reviews');
+            return;
+        }
+
+        try {
+            const token = getCookie('token');
+            const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
+            const response = await fetch(`http://127.0.0.1:5000/api/v1/reviews/places/${placeId}/reviews`, { headers });
+
+            const reviewsContainer = document.getElementById('reviews-container');
+            if (!response.ok) {
+                const errorData = await response.json();
+                reviewsContainer.innerHTML = `<p>${errorData.error}</p>`;
+                return;
+            }
+
+            const reviews = await response.json();
+            if (reviews.length === 0) {
+                reviewsContainer.innerHTML = '<p>No reviews available</p>';
+            } else {
+                // Fetch user names for each review
+                const reviewsWithUserNames = await Promise.all(reviews.map(async (review) => {
+                    const userName = await fetchUserName(review.user_id);
+                    return { ...review, userName }; // Add userName to the review object
+                }));
+
+                // Display reviews with user names
+                reviewsContainer.innerHTML = '<ul>' + reviewsWithUserNames.map(review => `
+                    <li>
+                        <p><strong>${review.userName}:</strong> ${review.text} (Rating: ${review.rating})</p>
+                    </li>
+                `).join('') + '</ul>';
+            }
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+            document.getElementById('reviews-container').innerHTML = '<p>Error loading reviews</p>';
+        }
+    }
+
     // Improved place details display
     async function displayPlaceDetails(placeData) {
         if (!placeDetailsSection) return;
@@ -94,15 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <p><strong>Description:</strong> ${place.description || 'Not available'}</p>
             <p><strong>Price per night:</strong> ${place.price ? `$${place.price}` : 'Not available'}</p>
             <p><strong>Amenities:</strong> ${await fetchAmenityNames(amenities)}</p>
-            <h3>Reviews</h3>
-            <ul>
-                ${place.reviews && place.reviews.length 
-                    ? place.reviews.map(review => `
-                        <li>
-                            <p><strong>${review.user || 'Anonymous'}</strong>: ${review.comment || 'No comment'}</p>
-                        </li>`).join('')
-                    : '<li>No reviews available</li>'}
-            </ul>
         `;
 
         if (addReviewForm) {
