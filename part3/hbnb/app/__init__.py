@@ -1,5 +1,4 @@
-# app/__init__.py
-from flask import Flask
+from flask import Flask, request  # Add request import
 from flask_sqlalchemy import SQLAlchemy
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
@@ -16,9 +15,9 @@ migrate = Migrate()
 def create_app(config_name='default'):
     app = Flask(__name__)
 
-    # Enable CORS for /api/v1/*
+    # Enable CORS for all routes and all origins
     from flask_cors import CORS
-    CORS(app, resources={r"/api/v1/*": {"origins": "*", "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"]}})
+    CORS(app, origins="*", methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"], allow_headers=["Content-Type", "Authorization"])
   
     # Load the configuration based on the environment (default to 'default')
     app.config.from_object(config[config_name])  # Load the config based on 'default'
@@ -27,9 +26,14 @@ def create_app(config_name='default'):
     bcrypt.init_app(app)
     jwt.init_app(app)
 
-    
     db.init_app(app)  # Connect db to the app
     migrate.init_app(app, db)  # Setup migration tool
+
+    # Add a before-request hook to handle OPTIONS requests globally
+    @app.before_request
+    def handle_options_requests():
+        if request.method == "OPTIONS":
+            return {}, 200
 
     # Initialize API
     api = Api(app, version='1.0', title='HBnB API', description='HBnB Application API')

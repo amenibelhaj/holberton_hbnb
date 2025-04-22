@@ -110,6 +110,19 @@ class PlaceResource(Resource):
         if not place_data:
             return {'error': 'No places found'}, 404
         
+        # Extract amenity IDs from place_data
+        amenity_ids = place_data.get('associated_amenities', [])
+        
+        # Fetch the Amenity objects and get their names
+        if amenity_ids:
+            amenities = Amenity.query.filter(Amenity.id.in_(amenity_ids)).all()
+            amenity_names = [amenity.name for amenity in amenities]
+        else:
+            amenity_names = []
+
+        # Update place_data with amenity names instead of IDs
+        place_data['associated_amenities'] = amenity_names
+        
         return place_data, 200
     
     @api.expect(place_model)
@@ -168,46 +181,48 @@ class PlaceResource(Resource):
         
 @api.route('/<place_id>/amenities')
 class PlaceAmenitiesResource(Resource):
-    @api.expect(amenity_model)  # Expecting a list of amenity IDs
+    @api.expect(amenity_model)
     @api.response(200, 'Amenities added successfully')
     @api.response(404, 'Place not found')
     @api.response(400, 'Invalid input')
     @jwt_required()
     def post(self, place_id):
-        """Add amenities to a place"""
-        # Fetch place from the database (place_data will be a dictionary)
+        # Fetch place from the database
         place_data = facade.get_place(place_id)
-        
         if not place_data:
             return {'error': 'Place not found'}, 404
-        
+
         # Get the list of amenity IDs from the request payload
         amenities_ids = api.payload.get('amenities_ids')
-        
         if not amenities_ids:
             return {'error': 'Amenities IDs are required'}, 400
-        
-        # Query the amenities table and get the amenities
+
+        # Query the amenities
         amenities = Amenity.query.filter(Amenity.id.in_(amenities_ids)).all()
-        
         if len(amenities) != len(amenities_ids):
             return {'error': 'Some amenities not found'}, 404
-        
-        # Check if 'associated_amenities' exists in place_data
-        if 'associated_amenities' in place_data:
-            # If it exists, extend the list of associated amenities
-            existing_amenities_ids = [amenity.id for amenity in place_data['associated_amenities']]
-            for amenity in amenities:
-                if amenity.id not in existing_amenities_ids:
-                    place_data['associated_amenities'].append(amenity)
-        else:
-            # If it doesn't exist, create the list of associated amenities
-            place_data['associated_amenities'] = amenities
-        
-        # Update the place data in the database (make sure this function properly updates the database)
-        facade.update_place(place_data)
 
-        return {'message': 'Amenities added successfully'}, 200
+        # Get existing amenity IDs (ensure it's a list of IDs)
+        existing_amenities_ids = place_data.get('associated_amenities', [])
+        if not isinstance(existing_amenities_ids, list):
+            existing_amenities_ids = []
+
+        # Ensure existing_amenities_ids contains only strings (IDs)
+        existing_amenities_ids = [str(amenity_id) for amenity_id in existing_amenities_ids]
+
+        # Add new amenity IDs, avoiding duplicates
+        new_amenities_ids = [amenity.id for amenity in amenities if amenity.id not in existing_amenities_ids]
+        updated_amenities_ids = existing_amenities_ids + new_amenities_ids
+
+        # Update place_data with the new list of amenity IDs (strings only)
+        place_data['associated_amenities'] = updated_amenities_ids
+
+        # Update the place in the database
+        try:
+            facade.update_place(place_id, place_data)
+            return {'message': 'Amenities added successfully'}, 200
+        except Exception as e:
+            return {'error': f'Failed to update place: {str(e)}'}, 500
 
     @api.response(200, 'Amenities retrieved successfully')
     @api.response(404, 'Place not found')
